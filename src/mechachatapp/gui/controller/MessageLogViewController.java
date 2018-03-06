@@ -12,6 +12,7 @@ import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.ListView;
 import javafx.scene.control.TextField;
+import javafx.scene.input.KeyEvent;
 import mechachatapp.be.Message;
 import mechachatapp.gui.model.MechaChatLogModel;
 
@@ -41,6 +42,7 @@ public class MessageLogViewController implements Initializable
     {
         String txt = txtMessage.getText();
         model.logMessage(txt);
+        txtMessage.clear();
     }
     
 }

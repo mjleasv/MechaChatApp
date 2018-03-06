@@ -1,10 +1,6 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package mechachatapp.bll;
 
+import java.util.List;
 import mechachatapp.be.Message;
 
 /**
@@ -14,6 +10,7 @@ import mechachatapp.be.Message;
 public interface IMechaChatLogicFacade
 {
 
-    public Message logMessage(String msg);
+    public Message logMessage(String msg); 
+    public List<Message> getMessages();
 
 }
