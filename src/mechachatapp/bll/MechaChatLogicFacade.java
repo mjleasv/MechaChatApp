@@ -8,7 +8,7 @@ package mechachatapp.bll;
 import java.util.ArrayList;
 import java.util.List;
 import mechachatapp.be.Message;
-import mechachatapp.dal.IDataFacade;
+import mechachatapp.dal.IMechaChatDataFacade;
 
 /**
  *
@@ -30,13 +30,13 @@ public class MechaChatLogicFacade implements IMechaChatLogicFacade
         return instance;
     }
     
-    IDataFacade dal;
+    IMechaChatDataFacade dal;
     
     private MechaChatLogicFacade()
     {
         //Private constructor, that no one outside can use!
         
-        dal = new IDataFacade()
+        dal = new IMechaChatDataFacade()
         {
             @Override
             public Message logMessage(String msg)

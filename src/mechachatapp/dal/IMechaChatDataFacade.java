@@ -7,7 +7,7 @@ import mechachatapp.be.Message;
  *
  * @author mjl
  */
-public interface IDataFacade 
+public interface IMechaChatDataFacade 
 {
     Message logMessage(String msg);
     List<Message> getMessages();
