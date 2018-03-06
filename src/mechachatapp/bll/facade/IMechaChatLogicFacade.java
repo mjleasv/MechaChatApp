@@ -3,8 +3,9 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package mechachatapp.bll;
+package mechachatapp.bll.facade;
 
+import java.util.List;
 import mechachatapp.be.Message;
 
 /**
@@ -14,6 +15,10 @@ import mechachatapp.be.Message;
 public interface IMechaChatLogicFacade
 {
 
+    public List<Message> getAllMessages();
+
     public Message logMessage(String msg);
 
+    
+    
 }

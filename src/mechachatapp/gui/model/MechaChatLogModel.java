@@ -5,10 +5,12 @@
  */
 package mechachatapp.gui.model;
 
+import java.util.List;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import mechachatapp.be.Message;
-import mechachatapp.bll.IMechaChatLogicFacade;
+import mechachatapp.bll.facade.IMechaChatLogicFacade;
+import mechachatapp.bll.facade.MCLogicFacade;
 
 /**
  *
@@ -24,16 +26,8 @@ public class MechaChatLogModel
     public MechaChatLogModel()
     {
         messages = FXCollections.observableArrayList();
-
-        facade = new IMechaChatLogicFacade()
-        {
-
-            @Override
-            public Message logMessage(String msg)
-            {
-                return new Message(0, msg);
-            }
-        };
+        facade = MCLogicFacade.getInstance();
+        messages.addAll(facade.getAllMessages());
     }
 
     public ObservableList<Message> getMessages()

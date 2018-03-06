@@ -10,8 +10,10 @@ import java.util.ResourceBundle;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
+import javafx.scene.control.ListCell;
 import javafx.scene.control.ListView;
 import javafx.scene.control.TextField;
+import javafx.util.Callback;
 import mechachatapp.be.Message;
 import mechachatapp.gui.model.MechaChatLogModel;
 
@@ -21,20 +23,41 @@ import mechachatapp.gui.model.MechaChatLogModel;
  */
 public class MessageLogViewController implements Initializable
 {
-    
+
     @FXML
     private ListView<Message> lstMessages;
     @FXML
     private TextField txtMessage;
-    
+
     private MechaChatLogModel model;
-    
+
     @Override
     public void initialize(URL url, ResourceBundle rb)
     {
         model = new MechaChatLogModel();
+        lstMessages.setCellFactory(new Callback<ListView<Message>, ListCell<Message>>()
+        {
+            @Override
+            public ListCell<Message> call(ListView<Message> param)
+            {
+                ListCell<Message> cell = new ListCell<Message>()
+                {
+                    @Override
+                    protected void updateItem(Message item, boolean empty)
+                    {
+                        super.updateItem(item, empty); //To change body of generated methods, choose Tools | Templates.
+                        if (item != null)
+                        {
+                            setText("#" + item.getId() + ": " + item.getText());
+                        }
+                    }
+
+                };
+                return cell;
+            }
+        });
         lstMessages.setItems(model.getMessages());
-    }    
+    }
 
     @FXML
     private void handleSendMessage(ActionEvent event)
@@ -42,5 +65,5 @@ public class MessageLogViewController implements Initializable
         String txt = txtMessage.getText();
         model.logMessage(txt);
     }
-    
+
 }

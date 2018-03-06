@@ -13,7 +13,7 @@
       <HBox maxWidth="1.7976931348623157E308" spacing="5.0" BorderPane.alignment="CENTER_RIGHT">
          <children>
             <TextField fx:id="txtMessage" maxWidth="1.7976931348623157E308" HBox.hgrow="ALWAYS" />
-              <Button onAction="#handleSendMessage" prefHeight="31.0" prefWidth="81.0" text="Send" />
+              <Button onAction="#handleSendMessage" prefHeight="31.0" prefWidth="90.0" text="Send" />
          </children>
          <BorderPane.margin>
             <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
