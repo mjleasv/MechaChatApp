@@ -1,19 +1,27 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import com.jfoenix.controls.JFXButton?>
+<?import com.jfoenix.controls.JFXHamburger?>
+<?import com.jfoenix.controls.JFXListView?>
+<?import com.jfoenix.controls.JFXTextField?>
 <?import java.net.URL?>
 <?import javafx.geometry.Insets?>
-<?import javafx.scene.control.Button?>
-<?import javafx.scene.control.ListView?>
-<?import javafx.scene.control.TextField?>
+<?import javafx.scene.control.MenuButton?>
+<?import javafx.scene.control.MenuItem?>
+<?import javafx.scene.control.SeparatorMenuItem?>
+<?import javafx.scene.input.KeyCodeCombination?>
 <?import javafx.scene.layout.BorderPane?>
+<?import javafx.scene.layout.ColumnConstraints?>
+<?import javafx.scene.layout.GridPane?>
 <?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.RowConstraints?>
 
-<BorderPane styleClass="background" xmlns="http://javafx.com/javafx/8.0.60" xmlns:fx="http://javafx.com/fxml/1" fx:controller="mechachatapp.gui.controller.MessageLogViewController">
+<BorderPane prefWidth="500.0" styleClass="background" xmlns="http://javafx.com/javafx/8.0.141" xmlns:fx="http://javafx.com/fxml/1" fx:controller="mechachatapp.gui.controller.MessageLogViewController">
    <bottom>
       <HBox maxWidth="1.7976931348623157E308" spacing="5.0" BorderPane.alignment="CENTER_RIGHT">
          <children>
-            <TextField fx:id="txtMessage" onAction="#handleSendMessage" maxWidth="1.7976931348623157E308" HBox.hgrow="ALWAYS" />
-              <Button onAction="#handleSendMessage" prefHeight="31.0" prefWidth="81.0" text="Send" />
+            <JFXTextField fx:id="txtMessage" focusColor="WHITE" maxWidth="1.7976931348623157E308" onAction="#handleSendMessage" onKeyPressed="#handleKeyPressed" prefHeight="30.0" promptText="Type your message here..." unFocusColor="#8d8d8d" HBox.hgrow="ALWAYS" />
+              <JFXButton onAction="#handleSendMessage" prefHeight="30.0" prefWidth="90.0" ripplerFill="WHITE" text="Send" textFill="WHITE" />
          </children>
          <BorderPane.margin>
             <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
@@ -21,11 +29,11 @@
       </HBox>
    </bottom>
    <center>
-      <ListView fx:id="lstMessages" prefHeight="432.0" prefWidth="336.0" BorderPane.alignment="CENTER">
+      <JFXListView fx:id="lstMessages" prefHeight="432.0" prefWidth="336.0" BorderPane.alignment="CENTER">
          <BorderPane.margin>
             <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
          </BorderPane.margin>
-      </ListView>
+      </JFXListView>
    </center>
    <stylesheets>
        <URL value="@../Styles/MechaChatStyle.css" />
@@ -36,4 +44,43 @@
    <padding>
       <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
    </padding>
+   <top>
+      <GridPane prefHeight="50.0" prefWidth="433.0">
+         <BorderPane.margin>
+            <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
+         </BorderPane.margin>
+         <columnConstraints>
+            <ColumnConstraints hgrow="SOMETIMES" maxWidth="1.7976931348623157E308" minWidth="10.0" />
+            <ColumnConstraints hgrow="SOMETIMES" maxWidth="50.0" minWidth="50.0" prefWidth="50.0" />
+         </columnConstraints>
+         <rowConstraints>
+            <RowConstraints minHeight="10.0" vgrow="SOMETIMES" />
+         </rowConstraints>
+         <children>
+            <JFXHamburger GridPane.columnIndex="1" />
+            <MenuButton alignment="CENTER_RIGHT" contentDisplay="RIGHT" mnemonicParsing="false" opacity="0.0" text="MenuButton" GridPane.columnIndex="1">
+              <items>
+                  <MenuItem mnemonicParsing="false" onAction="#handleSendMessage" text="Send" />
+                  <SeparatorMenuItem mnemonicParsing="false" />
+                <MenuItem mnemonicParsing="false" onAction="#handleUndo" text="Undo">
+                     <accelerator>
+                        <KeyCodeCombination alt="UP" code="Z" control="UP" meta="DOWN" shift="UP" shortcut="UP" />
+                     </accelerator>
+                  </MenuItem>
+                <MenuItem mnemonicParsing="false" onAction="#handleRedo" text="Redo">
+                     <accelerator>
+                        <KeyCodeCombination alt="UP" code="Z" control="UP" meta="DOWN" shift="DOWN" shortcut="UP" />
+                     </accelerator>
+                  </MenuItem>
+                  <SeparatorMenuItem mnemonicParsing="false" />
+                  <MenuItem mnemonicParsing="false" onAction="#handleExit" text="Exit">
+                     <accelerator>
+                        <KeyCodeCombination alt="UP" code="Q" control="UP" meta="DOWN" shift="UP" shortcut="UP" />
+                     </accelerator>
+                  </MenuItem>
+              </items>
+            </MenuButton>
+         </children>
+      </GridPane>
+   </top>
 </BorderPane>

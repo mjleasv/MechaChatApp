@@ -33,10 +33,26 @@ public class MechaChatLogModel
         return messages;
     }
 
-    public void logMessage(String text)
+    public Message logMessage(String text)
     {
         Message msg = facade.logMessage(text);
         messages.add(msg);
+        
+        return msg;
+    }
+    
+    public boolean removeMessage(Message msg)
+    {
+        if(facade.removeMessage(msg))
+        {
+            messages.remove(msg);
+            return true;
+        } 
+        else
+        {
+            //Report something went wrong...
+            return false;
+        }
     }
 
 }

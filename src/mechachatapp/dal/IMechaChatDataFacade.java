@@ -10,5 +10,7 @@ import mechachatapp.be.Message;
 public interface IMechaChatDataFacade 
 {
     Message logMessage(String msg);
+    boolean removeMessage(Message msg);
     List<Message> getMessages();
+    
 }
