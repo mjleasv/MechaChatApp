@@ -7,6 +7,7 @@ package mechachatapp.dal.facade;
 
 import java.util.List;
 import mechachatapp.be.Message;
+import mechachatapp.dal.exceptions.DalException;
 
 /**
  *
@@ -15,8 +16,10 @@ import mechachatapp.be.Message;
 public interface IMechaChatDalFacade
 {
 
-    public Message createMessage(String msg);
+    public Message createMessage(String msg) throws DalException;
 
-    public List<Message> readAllMessages();
+    public void deleteMessage(Message message) throws DalException;
+
+    public List<Message> readAllMessages() throws DalException;
 
 }

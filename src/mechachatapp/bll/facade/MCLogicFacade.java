@@ -7,7 +7,13 @@ package mechachatapp.bll.facade;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import mechachatapp.be.Message;
+import mechachatapp.bll.exceptions.BllException;
+import mechachatapp.dal.exceptions.DalException;
+import mechachatapp.dal.facade.IMechaChatDalFacade;
+import mechachatapp.dal.facade.MCDatabaseDalFacade;
 
 /**
  *
@@ -17,15 +23,20 @@ public class MCLogicFacade implements IMechaChatLogicFacade
 {
 
     private static MCLogicFacade INSTANCE;
+    private IMechaChatDalFacade dalFacade;
 
-    private int id = 1;
-
-    private MCLogicFacade()
+    private MCLogicFacade() throws BllException
     {
-
+        try
+        {
+            dalFacade = new MCDatabaseDalFacade();
+        } catch (DalException ex)
+        {
+            throw new BllException("Could not establish a connection to the data acces layer.", ex);
+        }
     }
 
-    public synchronized static MCLogicFacade getInstance()
+    public synchronized static MCLogicFacade getInstance() throws BllException
     {
         if (INSTANCE == null)
         {
@@ -35,20 +46,39 @@ public class MCLogicFacade implements IMechaChatLogicFacade
     }
 
     @Override
-    public List<Message> getAllMessages()
+    public void deleteMessage(Message message) throws BllException
     {
-        ArrayList<Message> msgs = new ArrayList<>();
-        msgs.add(logMessage("Hello world"));
-        msgs.add(logMessage("How are you?"));
-        msgs.add(logMessage("Fine thank you."));
-        msgs.add(logMessage("Bye bye"));
-        return msgs;
+         try
+        {
+        dalFacade.deleteMessage(message);
+         } catch (DalException ex)
+        {
+            throw new BllException(ex.getMessage(), ex);
+        }
     }
 
     @Override
-    public Message logMessage(String msg)
+    public List<Message> getAllMessages() throws BllException
     {
-        return new Message(id++, msg);
+        try
+        {
+            return dalFacade.readAllMessages();
+        } catch (DalException ex)
+        {
+            throw new BllException(ex.getMessage(), ex);
+        }
+    }
+
+    @Override
+    public Message logMessage(String msg) throws BllException
+    {
+        try
+        {
+            return dalFacade.createMessage(msg);
+        } catch (DalException ex)
+        {
+            throw new BllException(ex.getMessage(), ex);
+        }
     }
 
 }

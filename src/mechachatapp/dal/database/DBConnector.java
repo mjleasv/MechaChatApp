@@ -34,7 +34,7 @@ public class DBConnector
         ds.setUser(props.getProperty("USER"));
         ds.setPassword(props.getProperty("PASSWORD"));
     }
-
+    
     public Connection getConnection() throws SQLServerException
     {
         return ds.getConnection();

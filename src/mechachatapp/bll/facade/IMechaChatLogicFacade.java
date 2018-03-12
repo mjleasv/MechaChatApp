@@ -7,6 +7,7 @@ package mechachatapp.bll.facade;
 
 import java.util.List;
 import mechachatapp.be.Message;
+import mechachatapp.bll.exceptions.BllException;
 
 /**
  *
@@ -15,10 +16,10 @@ import mechachatapp.be.Message;
 public interface IMechaChatLogicFacade
 {
 
-    public List<Message> getAllMessages();
+    public void deleteMessage(Message message) throws BllException;
 
-    public Message logMessage(String msg);
+    public List<Message> getAllMessages() throws BllException;
 
-    
-    
+    public Message logMessage(String msg) throws BllException;
+
 }
