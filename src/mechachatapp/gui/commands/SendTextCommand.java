@@ -28,7 +28,7 @@ public class SendTextCommand implements IUndoableCommand {
     
     @Override
     public void execute() {
-        message = model.sendMessage(text);
+        message = model.logMessage(text);
     }
 
     @Override
