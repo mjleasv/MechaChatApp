@@ -9,14 +9,7 @@ package mechachatapp.gui.commands;
  *
  * @author mjl
  */
-public class WriteTextCommand implements ICommand {
-
-    //Command for text writing
-    
-    @Override
-    public void execute() {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
-    }
+public class ResetMessageLogCommand implements IUndoableCommand {
 
     @Override
     public void undo() {
@@ -25,6 +18,11 @@ public class WriteTextCommand implements ICommand {
 
     @Override
     public void redo() {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
+
+    @Override
+    public void execute() {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
     

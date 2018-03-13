@@ -8,17 +8,21 @@ package mechachatapp.gui.controller;
 import java.net.URL;
 import java.util.ResourceBundle;
 import java.util.Stack;
-import javafx.application.Platform;
 import javafx.event.ActionEvent;
+import javafx.event.EventType;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.ListView;
 import javafx.scene.control.TextField;
 import javafx.scene.input.KeyCode;
+import javafx.scene.input.KeyCodeCombination;
+import javafx.scene.input.KeyCombination;
 import javafx.scene.input.KeyEvent;
+import javafx.scene.layout.BorderPane;
 import mechachatapp.be.Message;
 import mechachatapp.gui.commands.ExitCommand;
 import mechachatapp.gui.commands.ICommand;
+import mechachatapp.gui.commands.IUndoableCommand;
 import mechachatapp.gui.commands.SendTextCommand;
 import mechachatapp.gui.model.MechaChatLogModel;
 
@@ -37,15 +41,27 @@ public class MessageLogViewController implements Initializable
     private MechaChatLogModel model;
     private boolean editingLastMessage;
     
-    private Stack<ICommand> history = new Stack<>();
-    private Stack<ICommand> redoHistory = new Stack<>();
+    private Stack<IUndoableCommand> history = new Stack<>();
+    private Stack<IUndoableCommand> redoHistory = new Stack<>();
+    @FXML
+    private BorderPane root;
+    
+    private KeyCodeCombination undoKeyComp;
+    private KeyCodeCombination redoKeyComp;
     
     @Override
     public void initialize(URL url, ResourceBundle rb)
     {
+        undoKeyComp = new KeyCodeCombination(KeyCode.Z, KeyCombination.META_DOWN);
+        redoKeyComp = new KeyCodeCombination(KeyCode.Z, KeyCombination.META_DOWN, KeyCombination.SHIFT_DOWN);
+        
         model = new MechaChatLogModel();
         editingLastMessage = false;
         lstMessages.setItems(model.getMessages());
+        
+        
+       root.addEventHandler(KeyEvent.KEY_PRESSED, e -> handleShortcutKeys(e));
+       
     }    
 
     @FXML
@@ -56,7 +72,7 @@ public class MessageLogViewController implements Initializable
             //Undo the last message
             if(!history.empty())
             {
-                ICommand cmd = history.pop();
+                IUndoableCommand cmd = history.pop();
                 cmd.undo();
             }
             else
@@ -78,7 +94,7 @@ public class MessageLogViewController implements Initializable
         String txt = txtMessage.getText();
         
         //Create the send text command
-        ICommand cmd = new SendTextCommand(model, txt);
+        IUndoableCommand cmd = new SendTextCommand(model, txt);
         
         //Execute the new send message command.
         cmd.execute();
@@ -100,7 +116,7 @@ public class MessageLogViewController implements Initializable
         //If there are any items in the undo history, undo the latest item
         if(!history.empty())
         {
-            ICommand cmd = history.pop();
+            IUndoableCommand cmd = history.pop();
             cmd.undo();
             redoHistory.push(cmd);
         }
@@ -112,7 +128,7 @@ public class MessageLogViewController implements Initializable
         //If there are any items in the redo history, redo the latest item
         if(!redoHistory.empty())
         {
-            ICommand cmd = redoHistory.pop();
+            IUndoableCommand cmd = redoHistory.pop();
             cmd.redo();
             history.push(cmd);
         }
@@ -127,6 +143,20 @@ public class MessageLogViewController implements Initializable
         cmd.execute();
     }
 
+    private void handleShortcutKeys(KeyEvent event)
+    {
+       if(undoKeyComp.match(event))
+       {
+           handleUndo(null);
+           event.consume();
+       }
+       else if(redoKeyComp.match(event))
+       {
+           handleRedo(null);
+           event.consume();
+       }
+    }
+    
     @FXML
     private void handleKeyPressed(KeyEvent event) {
         
@@ -151,30 +181,5 @@ public class MessageLogViewController implements Initializable
                 txtMessage.clear();
             }
         }
-        
     }
-    
 }
-
-
-/*
-scene.setOnKeyPressed(new EventHandler<KeyEvent>() {
- public void handle(final KeyEvent keyEvent) {
-   if (keyEvent.getCode() == KeyCode.F5) {
-    System.out.println("F5 pressed");
-    //Stop letting it do anything else
-    keyEvent.consume();
-   }
- }
-});
-final KeyCombination keyComb1 = new KeyCodeCombination(KeyCode.R,
-                                    KeyCombination.CONTROL_DOWN);
-scene.addEventHandler(KeyEvent.KEY_RELEASED, new EventHandler() {
-                @Override
-                public void handle(KeyEvent event) {
-                    if (keyComb1.match(event)) {
-                        System.out.println("Ctrl+R pressed");
-                    }
-                }
-            });
-*/

@@ -9,7 +9,7 @@ package mechachatapp.gui.commands;
  *
  * @author mjl
  */
-public interface ICommand 
-{
-    void execute();
+public interface IUndoableCommand extends ICommand {
+    void undo();
+    void redo();
 }

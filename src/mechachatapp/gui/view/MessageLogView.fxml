@@ -16,11 +16,20 @@
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.RowConstraints?>
 
-<BorderPane prefWidth="500.0" styleClass="background" xmlns="http://javafx.com/javafx/8.0.141" xmlns:fx="http://javafx.com/fxml/1" fx:controller="mechachatapp.gui.controller.MessageLogViewController">
+<BorderPane fx:id="root" prefWidth="500.0" styleClass="background" xmlns="http://javafx.com/javafx/8.0.141" xmlns:fx="http://javafx.com/fxml/1" fx:controller="mechachatapp.gui.controller.MessageLogViewController">
    <bottom>
       <HBox maxWidth="1.7976931348623157E308" spacing="5.0" BorderPane.alignment="CENTER_RIGHT">
          <children>
-            <JFXTextField fx:id="txtMessage" focusColor="WHITE" maxWidth="1.7976931348623157E308" onAction="#handleSendMessage" onKeyPressed="#handleKeyPressed" prefHeight="30.0" promptText="Type your message here..." unFocusColor="#8d8d8d" HBox.hgrow="ALWAYS" />
+            <JFXTextField fx:id="txtMessage" focusColor="WHITE" maxWidth="1.7976931348623157E308" onAction="#handleSendMessage" onKeyPressed="#handleKeyPressed" prefHeight="30.0" promptText="Type your message here..." style="-fx-text-inner-color: lightgray;" unFocusColor="#8d8d8d" HBox.hgrow="ALWAYS">
+               <opaqueInsets>
+                  <Insets />
+               </opaqueInsets>
+               <padding>
+                  <Insets left="5.0" right="5.0" />
+               </padding>
+               <HBox.margin>
+                  <Insets />
+               </HBox.margin></JFXTextField>
               <JFXButton onAction="#handleSendMessage" prefHeight="30.0" prefWidth="90.0" ripplerFill="WHITE" text="Send" textFill="WHITE" />
          </children>
          <BorderPane.margin>

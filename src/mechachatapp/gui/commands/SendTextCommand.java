@@ -12,7 +12,7 @@ import mechachatapp.gui.model.MechaChatLogModel;
  *
  * @author mjl
  */
-public class SendTextCommand implements ICommand {
+public class SendTextCommand implements IUndoableCommand {
 
     private String text;
     private Message message = null;
@@ -28,7 +28,7 @@ public class SendTextCommand implements ICommand {
     
     @Override
     public void execute() {
-        message = model.logMessage(text);
+        message = model.sendMessage(text);
     }
 
     @Override
