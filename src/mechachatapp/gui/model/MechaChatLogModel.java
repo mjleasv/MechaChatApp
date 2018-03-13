@@ -22,7 +22,7 @@ public class MechaChatLogModel
 
     private IMechaChatLogicFacade facade;
 
-    private final ObservableList<Message> messages;
+    private ObservableList<Message> messages;
 
     public MechaChatLogModel() throws BllException
     {

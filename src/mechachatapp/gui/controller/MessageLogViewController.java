@@ -8,6 +8,8 @@ package mechachatapp.gui.controller;
 import java.net.URL;
 import java.util.ResourceBundle;
 import java.util.Stack;
+import javafx.application.Platform;
+import javafx.collections.ListChangeListener;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
@@ -57,27 +59,7 @@ public class MessageLogViewController implements Initializable
             model = new MechaChatLogModel();
             undos = new Stack<>();
             redos = new Stack<>();
-            lstMessages.setCellFactory(new Callback<ListView<Message>, ListCell<Message>>()
-            {
-                @Override
-                public ListCell<Message> call(ListView<Message> param)
-                {
-                    ListCell<Message> cell = new ListCell<Message>()
-                    {
-                        @Override
-                        protected void updateItem(Message item, boolean empty)
-                        {
-                            super.updateItem(item, empty); 
-                            if (!empty && item != null)
-                            {
-                                setText("#" + item.getId() + ": " + item.getText());
-                            }
-                        }
-
-                    };
-                    return cell;
-                }
-            });
+            instantiateListViewCellFactory();
             lstMessages.setItems(model.getMessages());
             initKeyHandling();
         } catch (BllException ex)
@@ -86,21 +68,46 @@ public class MessageLogViewController implements Initializable
         }
     }
 
+    private void instantiateListViewCellFactory()
+    {
+        lstMessages.setCellFactory((ListView<Message> param)
+                -> 
+                {
+                    ListCell<Message> cell = new ListCell<Message>()
+                    {
+                        @Override
+                        protected void updateItem(Message item, boolean empty)
+                        {
+                            super.updateItem(item, empty);
+                            if (!empty && item != null)
+                            {
+                                setText("#" + item.getId() + ": " + item.getText());
+                            } else
+                            {
+                                setText(null);
+                                setGraphic(null);
+                            }
+                        }
+
+                    };
+                    return cell;
+        });
+    }
+
     private void initKeyHandling()
     {
-        txtMessage.getParent().addEventFilter(KeyEvent.KEY_RELEASED, new EventHandler<KeyEvent>()
-        {
-            @Override
-            public void handle(KeyEvent event)
-            {
-                if (keysUndo.match(event))
+        txtMessage.getParent().addEventFilter(KeyEvent.KEY_RELEASED, (KeyEvent event)
+                -> 
                 {
-                    undo();
-                } else if (keysRedo.match(event))
-                {
-                    redo();
-                }
-            }
+                    if (keysUndo.match(event))
+                    {
+                        System.out.println("Ctrl + z");
+                        undo();
+                    } else if (keysRedo.match(event))
+                    {
+                        System.out.println("Ctrl + y");
+                        redo();
+                    }
         });
     }
 
@@ -133,33 +140,33 @@ public class MessageLogViewController implements Initializable
 
     private void undo()
     {
-        try
+        if (!undos.empty())
         {
-            if (!undos.empty())
+            try
             {
                 ICommand cmd = undos.pop();
                 cmd.undo();
                 redos.push(cmd);
+            } catch (BllException ex)
+            {
+                displayException(ex);
             }
-        } catch (BllException ex)
-        {
-            displayException(ex);
         }
     }
 
     private void redo()
     {
-        try
+        if (!redos.empty())
         {
-            if (!redos.empty())
+            try
             {
                 ICommand cmd = redos.pop();
                 cmd.execute();
                 undos.push(cmd);
+            } catch (BllException ex)
+            {
+                displayException(ex);
             }
-        } catch (BllException ex)
-        {
-            displayException(ex);
         }
     }
 
