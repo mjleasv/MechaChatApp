@@ -30,6 +30,7 @@
             <Insets bottom="15.0" />
          </VBox.margin>
       </Label>
+      <Button mnemonicParsing="false" onAction="#handleCreateUser" text="Create user" textAlignment="CENTER" />
       <HBox alignment="BOTTOM_CENTER" spacing="15.0" VBox.vgrow="ALWAYS">
          <children>
             <Button alignment="CENTER" cancelButton="true" maxWidth="1.7976931348623157E308" mnemonicParsing="false" onAction="#handleQuit" text="Quit" HBox.hgrow="ALWAYS" />

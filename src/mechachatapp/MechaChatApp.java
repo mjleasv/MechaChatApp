@@ -15,14 +15,13 @@ import javafx.stage.Stage;
  *
  * @author pgn
  */
-public class MechaChatApp extends Application
+public final class MechaChatApp extends Application
 {
 
     @Override
     public void start(Stage stage) throws Exception
     {
-        //Parent root = FXMLLoader.load(getClass().getResource("/mechachatapp/gui/view/MessageLogView.fxml"));
-        Parent root = FXMLLoader.load(getClass().getResource("/mechachatapp/gui/view/CreateUserView.fxml"));
+        Parent root = FXMLLoader.load(getClass().getResource("/mechachatapp/gui/view/LoginView.fxml"));
         Scene scene = new Scene(root);
         stage.setScene(scene);
         stage.show();

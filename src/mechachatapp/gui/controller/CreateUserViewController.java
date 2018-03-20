@@ -18,7 +18,7 @@ import mechachatapp.bll.exceptions.BllException;
 import mechachatapp.bll.validation.AbstractValidation;
 import mechachatapp.bll.validation.IValidation;
 import mechachatapp.bll.validation.ValidationFactory;
-import mechachatapp.gui.model.CreateUserModel;
+import mechachatapp.gui.model.UserModel;
 
 /**
  * FXML Controller class
@@ -45,7 +45,7 @@ public class CreateUserViewController extends CommandableController implements I
     @FXML
     private Label txtUserNameError;
 
-    private CreateUserModel userModel;
+    private UserModel userModel;
 
     private IValidation userNameValidation;
     private IValidation emailValidation;
@@ -59,7 +59,7 @@ public class CreateUserViewController extends CommandableController implements I
     {
         try
         {
-            userModel = new CreateUserModel();
+            userModel = new UserModel();
             userNameValidation = ValidationFactory.CreateInputValidation(ValidationFactory.ValidationTypes.USER_NAME);
             bindValidation(txtUserName, txtUserNameError, userNameValidation);
             emailValidation = ValidationFactory.CreateInputValidation(ValidationFactory.ValidationTypes.EMAIL);
@@ -71,7 +71,9 @@ public class CreateUserViewController extends CommandableController implements I
                 @Override
                 public boolean validateInput(String input)
                 {
-                    if (input.equalsIgnoreCase(txtPassword.getText().trim()))
+                    String passwrd = txtPassword.getText().trim();
+                    String passwrd2 = txtPasswordAgain.getText().trim();
+                    if (passwrd.equalsIgnoreCase(passwrd2))
                     {
                         validationMessage = "Passwords are identical";
                         return true;
@@ -84,6 +86,7 @@ public class CreateUserViewController extends CommandableController implements I
 
             };
             bindValidation(txtPasswordAgain, txtPasswordAgainError, passwordAgainValidation);
+            bindValidation(txtPassword, txtPasswordAgainError, passwordAgainValidation);
         } catch (BllException ex)
         {
             displayException(ex);
@@ -113,6 +116,11 @@ public class CreateUserViewController extends CommandableController implements I
         String password = txtPassword.getText().trim();
         User user = userModel.createNewUser(userName, email, password);
         //Switch to login or "InGame" view...
+    }
+
+    void setUserModel(UserModel userModel)
+    {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 
 }

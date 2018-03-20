@@ -14,12 +14,12 @@ import mechachatapp.bll.facade.MCLogicFacade;
  *
  * @author pgn
  */
-public class CreateUserModel
+public class UserModel
 {
 
     private IMechaChatLogicFacade logicFacade;
 
-    public CreateUserModel() throws BllException
+    public UserModel() throws BllException
     {
         logicFacade = MCLogicFacade.getInstance();
     }
@@ -28,6 +28,11 @@ public class CreateUserModel
     {
         User user = logicFacade.createUSer(userName, email, password);
         return user;
+    }
+
+    public Object getLoggedInUser()
+    {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 
 }

@@ -24,6 +24,7 @@ public class AndValidation extends AbstractValidation
     @Override
     public boolean validateInput(String input)
     {
+        validationMessage = "";
         boolean isValid = true;
         if (!a.validateInput(input))
         {

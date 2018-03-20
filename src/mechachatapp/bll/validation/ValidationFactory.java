@@ -33,7 +33,7 @@ public class ValidationFactory
             case EMAIL:
                 return new EmailValidation();
             case PASSWORD:
-                return CreateAndInputValidation(new PasswordLengthValidation(), new PasswordNotTopTenValidation(), new PasswordContainsSpecialChars());
+                return CreateAndInputValidation(new PasswordLengthValidation(), new PasswordContainsSpecialChars(), new PasswordNotTopTenValidation());
             case USER_NAME:
                 return new UserNameValidation();
             default:
