@@ -17,4 +17,9 @@ public class BllException extends Exception
         super(message, cause);
     }
 
+    public BllException(String message)
+    {
+        super(message);
+    }
+
 }

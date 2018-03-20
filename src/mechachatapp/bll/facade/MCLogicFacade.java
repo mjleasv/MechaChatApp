@@ -5,11 +5,9 @@
  */
 package mechachatapp.bll.facade;
 
-import java.util.ArrayList;
 import java.util.List;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import mechachatapp.be.Message;
+import mechachatapp.be.User;
 import mechachatapp.bll.exceptions.BllException;
 import mechachatapp.dal.exceptions.DalException;
 import mechachatapp.dal.facade.IMechaChatDalFacade;
@@ -48,10 +46,10 @@ public class MCLogicFacade implements IMechaChatLogicFacade
     @Override
     public void deleteMessage(Message message) throws BllException
     {
-         try
+        try
         {
-        dalFacade.deleteMessage(message);
-         } catch (DalException ex)
+            dalFacade.deleteMessage(message);
+        } catch (DalException ex)
         {
             throw new BllException(ex.getMessage(), ex);
         }
@@ -79,6 +77,13 @@ public class MCLogicFacade implements IMechaChatLogicFacade
         {
             throw new BllException(ex.getMessage(), ex);
         }
+
+    }
+
+    @Override
+    public User createUSer(String userName, String email, String password) throws BllException
+    {
+        return new User(1, "Peter", "pgn@email.dk");
     }
 
 }

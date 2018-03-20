@@ -7,6 +7,7 @@ package mechachatapp.bll.facade;
 
 import java.util.List;
 import mechachatapp.be.Message;
+import mechachatapp.be.User;
 import mechachatapp.bll.exceptions.BllException;
 
 /**
@@ -21,5 +22,7 @@ public interface IMechaChatLogicFacade
     public List<Message> getAllMessages() throws BllException;
 
     public Message logMessage(String msg) throws BllException;
+
+    public User createUSer(String userName, String email, String password) throws BllException;
 
 }

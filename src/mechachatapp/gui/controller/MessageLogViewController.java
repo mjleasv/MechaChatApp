@@ -7,11 +7,7 @@ package mechachatapp.gui.controller;
 
 import java.net.URL;
 import java.util.ResourceBundle;
-import java.util.Stack;
-import javafx.application.Platform;
-import javafx.collections.ListChangeListener;
 import javafx.event.ActionEvent;
-import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.ListCell;
@@ -21,18 +17,16 @@ import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyCodeCombination;
 import javafx.scene.input.KeyCombination;
 import javafx.scene.input.KeyEvent;
-import javafx.util.Callback;
 import mechachatapp.be.Message;
 import mechachatapp.bll.exceptions.BllException;
 import mechachatapp.gui.model.MechaChatLogModel;
 import mechachatapp.gui.model.command.CreateMessageCommand;
-import mechachatapp.gui.model.command.ICommand;
 
 /**
  *
  * @author pgn
  */
-public class MessageLogViewController implements Initializable
+public class MessageLogViewController extends CommandableController implements Initializable
 {
 
     @FXML
@@ -41,9 +35,6 @@ public class MessageLogViewController implements Initializable
     private TextField txtMessage;
 
     private MechaChatLogModel model;
-
-    private Stack<ICommand> undos;
-    private Stack<ICommand> redos;
 
     private KeyCombination keysUndo;
     private KeyCombination keysRedo;
@@ -57,8 +48,6 @@ public class MessageLogViewController implements Initializable
         try
         {
             model = new MechaChatLogModel();
-            undos = new Stack<>();
-            redos = new Stack<>();
             instantiateListViewCellFactory();
             lstMessages.setItems(model.getMessages());
             initKeyHandling();
@@ -111,63 +100,12 @@ public class MessageLogViewController implements Initializable
         });
     }
 
-    private void displayException(BllException ex)
-    {
-        System.out.println("I should display an error message wit the text: " + ex.getMessage());
-        ex.printStackTrace();
-    }
-
     @FXML
     private void handleSendMessage(ActionEvent event)
     {
         String txt = txtMessage.getText();
         CreateMessageCommand cmdCreate = new CreateMessageCommand(model, txt);
         issueCommand(cmdCreate);
-    }
-
-    private void issueCommand(ICommand command)
-    {
-        try
-        {
-            command.execute();
-            undos.push(command);
-            redos.clear();
-        } catch (BllException ex)
-        {
-            displayException(ex);
-        }
-    }
-
-    private void undo()
-    {
-        if (!undos.empty())
-        {
-            try
-            {
-                ICommand cmd = undos.pop();
-                cmd.undo();
-                redos.push(cmd);
-            } catch (BllException ex)
-            {
-                displayException(ex);
-            }
-        }
-    }
-
-    private void redo()
-    {
-        if (!redos.empty())
-        {
-            try
-            {
-                ICommand cmd = redos.pop();
-                cmd.execute();
-                undos.push(cmd);
-            } catch (BllException ex)
-            {
-                displayException(ex);
-            }
-        }
     }
 
 }
