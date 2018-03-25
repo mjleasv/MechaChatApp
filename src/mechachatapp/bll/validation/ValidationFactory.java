@@ -33,9 +33,9 @@ public class ValidationFactory
             case EMAIL:
                 return new EmailValidation();
             case PASSWORD:
-                return CreateAndInputValidation(new PasswordLengthValidation(), new PasswordContainsSpecialChars(), new PasswordNotTopTenValidation());
+                return CreateAndInputValidation(new InputLengthValidation(InputLengthValidation.MINIMUM_PASSWORD_LENGTH, true), new PasswordContainsSpecialChars(), new PasswordNotTopTenValidation());
             case USER_NAME:
-                return new UserNameValidation();
+                return CreateAndInputValidation(new InputLengthValidation(InputLengthValidation.MAXIMUM_USER_NAME_LENGTH, false), new UserNameValidation());
             default:
                 throw new BllException("Unknown validation type submitted to ValidationFactory");
         }

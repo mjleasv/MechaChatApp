@@ -118,7 +118,7 @@ public class AndValidationTest
     @Test
     public void testManyPasswordRulesChange()
     {
-        AndValidation instance = new AndValidation(new AndValidation(new PasswordLengthValidation(), new PasswordContainsSpecialChars()), new PasswordNotTopTenValidation());
+        AndValidation instance = new AndValidation(new AndValidation(new InputLengthValidation(InputLengthValidation.MINIMUM_PASSWORD_LENGTH, true), new PasswordContainsSpecialChars()), new PasswordNotTopTenValidation());
         String badPassword = "google";
         String goodPassword = "apmf123!#GGhe";
         instance.validateInput(badPassword);
@@ -130,7 +130,7 @@ public class AndValidationTest
     @Test
     public void testManyPasswordRulesChangeMsgTest()
     {
-        AndValidation instance = new AndValidation(new AndValidation(new PasswordLengthValidation(), new PasswordContainsSpecialChars()), new PasswordNotTopTenValidation());
+        AndValidation instance = new AndValidation(new AndValidation(new InputLengthValidation(InputLengthValidation.MINIMUM_PASSWORD_LENGTH, true), new PasswordContainsSpecialChars()), new PasswordNotTopTenValidation());
         String badPassword = "google";
         String goodPassword = "apmf123!#GGhe";
         instance.validateInput(badPassword);

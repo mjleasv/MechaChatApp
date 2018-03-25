@@ -13,7 +13,7 @@ import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
-import mechachatapp.be.User;
+import javafx.stage.Stage;
 import mechachatapp.bll.exceptions.BllException;
 import mechachatapp.bll.validation.AbstractValidation;
 import mechachatapp.bll.validation.IValidation;
@@ -59,7 +59,6 @@ public class CreateUserViewController extends CommandableController implements I
     {
         try
         {
-            userModel = new UserModel();
             userNameValidation = ValidationFactory.CreateInputValidation(ValidationFactory.ValidationTypes.USER_NAME);
             bindValidation(txtUserName, txtUserNameError, userNameValidation);
             emailValidation = ValidationFactory.CreateInputValidation(ValidationFactory.ValidationTypes.EMAIL);
@@ -114,13 +113,14 @@ public class CreateUserViewController extends CommandableController implements I
         String userName = txtUserName.getText().trim();
         String email = txtEmail.getText().trim();
         String password = txtPassword.getText().trim();
-        User user = userModel.createNewUser(userName, email, password);
-        //Switch to login or "InGame" view...
+        userModel.createNewUser(userName, email, password);
+        userModel.logInUser(userName, password);
+        ((Stage) txtEmail.getScene().getWindow()).close();
     }
 
     void setUserModel(UserModel userModel)
     {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        this.userModel = userModel;
     }
 
 }

@@ -14,36 +14,61 @@ import static org.junit.Assert.*;
  */
 public class PasswordValidationTest
 {
-    
+
     public PasswordValidationTest()
     {
     }
 
     /**
-     * Test of validateInput method, of class PasswordLengthValidation.
+     * Test of validateInput method, of class InputLengthValidation.
      */
     @Test
     public void testValidateInputShort()
     {
         String input = "IMSHORT";
-        PasswordLengthValidation instance = new PasswordLengthValidation();
+        InputLengthValidation instance = new InputLengthValidation(InputLengthValidation.MINIMUM_PASSWORD_LENGTH, true);
         boolean expResult = false;
         boolean result = instance.validateInput(input);
         assertEquals(expResult, result);
     }
-    
 
     /**
-     * Test of validateInput method, of class PasswordLengthValidation.
+     * Test of validateInput method, of class InputLengthValidation.
      */
     @Test
     public void testValidateInputLongEnough()
     {
         String input = "IMLONGER";
-        PasswordLengthValidation instance = new PasswordLengthValidation();
+        InputLengthValidation instance = new InputLengthValidation(InputLengthValidation.MINIMUM_PASSWORD_LENGTH, true);
         boolean expResult = true;
         boolean result = instance.validateInput(input);
         assertEquals(expResult, result);
     }
-    
+
+    /**
+     * Test of validateInput method, of class InputLengthValidation.
+     */
+    @Test
+    public void testValidateInputNameNotTooLong()
+    {
+        String input = "12345678901234567890123456789012345678901234567890"; //50 chars
+        InputLengthValidation instance = new InputLengthValidation(InputLengthValidation.MAXIMUM_USER_NAME_LENGTH, false);
+        boolean expResult = true;
+        boolean result = instance.validateInput(input);
+        assertEquals(expResult, result);
+    }
+
+    /**
+     * Test of validateInput method, of class InputLengthValidation.
+     */
+    @Test
+    public void testValidateInputNameTooLong()
+    {
+        String input = "123456789012345678901234567890123456789012345678901"; //51 chars
+        InputLengthValidation instance = new InputLengthValidation(InputLengthValidation.MAXIMUM_USER_NAME_LENGTH, false);
+        boolean expResult = false;
+        boolean result = instance.validateInput(input);
+        assertEquals(expResult, result);
+    }
+
 }

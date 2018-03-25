@@ -9,6 +9,7 @@ import mechachatapp.be.User;
 import mechachatapp.bll.exceptions.BllException;
 import mechachatapp.bll.facade.IMechaChatLogicFacade;
 import mechachatapp.bll.facade.MCLogicFacade;
+import mechachatapp.gui.model.exceptions.GUIException;
 
 /**
  *
@@ -17,6 +18,8 @@ import mechachatapp.bll.facade.MCLogicFacade;
 public class UserModel
 {
 
+    private User loggedInUser;
+
     private IMechaChatLogicFacade logicFacade;
 
     public UserModel() throws BllException
@@ -24,15 +27,24 @@ public class UserModel
         logicFacade = MCLogicFacade.getInstance();
     }
 
-    public User createNewUser(String userName, String email, String password) throws BllException
+    public void createNewUser(String userName, String email, String password) throws BllException
     {
-        User user = logicFacade.createUSer(userName, email, password);
-        return user;
+        logicFacade.createUSer(userName, email, password);
     }
 
-    public Object getLoggedInUser()
+    public User getLoggedInUser() throws GUIException
     {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        if (loggedInUser == null)
+        {
+            throw new GUIException("No user logged in");
+        }
+        return loggedInUser;
+    }
+
+    public void logInUser(String userName, String password) throws BllException
+    {
+        User user = logicFacade.logInUser(userName, password);
+        this.loggedInUser = user;
     }
 
 }

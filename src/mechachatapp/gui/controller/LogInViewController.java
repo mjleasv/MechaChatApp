@@ -8,7 +8,8 @@ package mechachatapp.gui.controller;
 import java.io.IOException;
 import java.net.URL;
 import java.util.ResourceBundle;
-import javafx.application.Application;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -20,6 +21,7 @@ import javafx.scene.control.TextField;
 import javafx.stage.Stage;
 import mechachatapp.bll.exceptions.BllException;
 import mechachatapp.gui.model.UserModel;
+import mechachatapp.gui.model.exceptions.GUIException;
 
 /**
  * FXML Controller class
@@ -78,8 +80,16 @@ public class LogInViewController extends CommandableController implements Initia
     @FXML
     private void handleLogIn(ActionEvent event)
     {
-        //TODO Get login credentials and login through the user model
-        switchToGameView();
+        try
+        {
+            String userName = txtUserName.getText().trim();
+            String password = txtPassword.getText().trim();
+            userModel.logInUser(userName, password);
+            switchToGameView();
+        } catch (BllException ex)
+        {
+            displayException(ex);
+        }
     }
     
     @FXML
@@ -90,9 +100,18 @@ public class LogInViewController extends CommandableController implements Initia
     
     private void switchToGameView()
     {
-        if (userModel.getLoggedInUser() != null)
+        try
         {
-            //TODO Load "Game" screen
+            userModel.getLoggedInUser();
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/mechachatapp/gui/view/MainMLogView.fxml"));
+            Parent parent = loader.load();
+            MainController controller = loader.getController();
+            controller.setUserModel(userModel);
+            Scene scene = txtEmailError.getScene();
+            scene.setRoot(parent);
+        } catch (BllException | IOException ex)
+        {
+            displayException(new GUIException("Could not start application", ex));
         }
     }
     

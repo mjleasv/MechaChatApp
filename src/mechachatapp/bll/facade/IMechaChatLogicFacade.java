@@ -21,6 +21,8 @@ public interface IMechaChatLogicFacade
 
     public List<Message> getAllMessages() throws BllException;
 
+    public User logInUser(String userName, String password) throws BllException;
+
     public Message logMessage(String msg) throws BllException;
 
     public User createUSer(String userName, String email, String password) throws BllException;

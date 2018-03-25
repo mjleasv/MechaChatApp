@@ -68,6 +68,12 @@ public class MCLogicFacade implements IMechaChatLogicFacade
     }
 
     @Override
+    public User logInUser(String userName, String password) throws BllException
+    {
+        return new User(1, userName, "pgn@easv.dk");
+    }
+
+    @Override
     public Message logMessage(String msg) throws BllException
     {
         try
@@ -83,7 +89,7 @@ public class MCLogicFacade implements IMechaChatLogicFacade
     @Override
     public User createUSer(String userName, String email, String password) throws BllException
     {
-        return new User(1, "Peter", "pgn@email.dk");
+        return new User(1, userName, email);
     }
 
 }
