@@ -17,6 +17,7 @@ import javax.xml.bind.annotation.XmlRootElement;
 public class XMLMessage {
     int id;
     String text;
+    int userId;
 
     public int getId() {
         return id;
@@ -34,5 +35,14 @@ public class XMLMessage {
     @XmlElement
     public void setText(String text) {
         this.text = text;
+    }
+    
+    public int getUserId() {
+        return userId;
+    }
+
+    @XmlAttribute
+    public void setUserId(int userId) {
+        this.userId = userId;
     }
 }

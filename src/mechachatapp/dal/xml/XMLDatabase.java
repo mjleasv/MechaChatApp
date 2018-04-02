@@ -15,5 +15,6 @@ import javax.xml.bind.annotation.XmlRootElement;
  */
 @XmlRootElement
 public class XMLDatabase {
+    public List<XMLUser> users = new ArrayList<>();
     public List<XMLMessage> messages = new ArrayList<>();
 }
