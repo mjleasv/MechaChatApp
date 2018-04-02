@@ -113,6 +113,7 @@ public class LoginViewController implements Initializable {
             controller.setModel(model);
             
             stage.setScene(mainScene);
+            stage.centerOnScreen();
             
         } catch (IOException ex) {
             Logger.getLogger(LoginViewController.class.getName()).log(Level.SEVERE, null, ex);
