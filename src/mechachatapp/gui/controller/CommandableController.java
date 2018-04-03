@@ -6,6 +6,7 @@
 package mechachatapp.gui.controller;
 
 import java.util.Stack;
+import javafx.beans.property.BooleanProperty;
 import javafx.scene.control.Alert;
 import javafx.scene.control.ButtonType;
 import mechachatapp.bll.exceptions.BllException;
@@ -21,6 +22,8 @@ public abstract class CommandableController
     private Stack<ICommand> undos;
     private Stack<ICommand> redos;
 
+    
+    
     public CommandableController()
     {
         undos = new Stack<>();

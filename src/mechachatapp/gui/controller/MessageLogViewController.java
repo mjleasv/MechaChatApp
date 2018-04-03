@@ -20,6 +20,7 @@ import javafx.scene.input.KeyEvent;
 import mechachatapp.be.Message;
 import mechachatapp.bll.exceptions.BllException;
 import mechachatapp.gui.model.MechaChatLogModel;
+import mechachatapp.gui.model.UserModel;
 import mechachatapp.gui.model.command.CreateMessageCommand;
 
 /**
@@ -34,7 +35,8 @@ public class MessageLogViewController extends CommandableController implements I
     @FXML
     private TextField txtMessage;
 
-    private MechaChatLogModel model;
+    private MechaChatLogModel messageModel;
+    private UserModel userModel;
 
     private KeyCombination keysUndo;
     private KeyCombination keysRedo;
@@ -47,9 +49,9 @@ public class MessageLogViewController extends CommandableController implements I
 
         try
         {
-            model = new MechaChatLogModel();
+            messageModel = new MechaChatLogModel();
             instantiateListViewCellFactory();
-            lstMessages.setItems(model.getMessages());
+            lstMessages.setItems(messageModel.getMessages());
             initKeyHandling();
         } catch (BllException ex)
         {
@@ -104,8 +106,13 @@ public class MessageLogViewController extends CommandableController implements I
     private void handleSendMessage(ActionEvent event)
     {
         String txt = txtMessage.getText();
-        CreateMessageCommand cmdCreate = new CreateMessageCommand(model, txt);
+        CreateMessageCommand cmdCreate = new CreateMessageCommand(messageModel, txt);
         issueCommand(cmdCreate);
+    }
+
+    void setUserModel(UserModel userModel)
+    {
+        this.userModel = userModel;
     }
 
 }

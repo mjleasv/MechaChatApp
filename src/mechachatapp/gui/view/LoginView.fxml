@@ -3,6 +3,7 @@
 <?import javafx.geometry.Insets?>
 <?import javafx.scene.control.Button?>
 <?import javafx.scene.control.Label?>
+<?import javafx.scene.control.PasswordField?>
 <?import javafx.scene.control.TextField?>
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.VBox?>
@@ -18,13 +19,13 @@
             <Insets bottom="15.0" />
          </VBox.margin>
       </Label>
-      <TextField fx:id="txtUserName" promptText="User name" />
+      <TextField fx:id="txtUserName" promptText="Enter user name" />
       <Label fx:id="txtUserNameError" maxWidth="1.7976931348623157E308" textFill="RED">
          <VBox.margin>
             <Insets bottom="15.0" />
          </VBox.margin>
       </Label>
-      <TextField fx:id="txtPassword" promptText="Password" />
+      <PasswordField fx:id="txtPassword" promptText="Enter password" />
       <Label fx:id="txtEmailError" maxWidth="1.7976931348623157E308" textFill="RED">
          <VBox.margin>
             <Insets bottom="15.0" />
