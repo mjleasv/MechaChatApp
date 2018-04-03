@@ -6,6 +6,8 @@
 package mechachatapp.gui.controller;
 
 import java.util.Stack;
+import javafx.scene.control.Alert;
+import javafx.scene.control.ButtonType;
 import mechachatapp.bll.exceptions.BllException;
 import mechachatapp.gui.model.command.ICommand;
 
@@ -27,8 +29,9 @@ public abstract class CommandableController
 
     public void displayException(BllException ex)
     {
-        System.out.println(ex.getMessage());
         ex.printStackTrace();
+        Alert alert = new Alert(Alert.AlertType.ERROR, ex.getMessage(), ButtonType.OK);
+        alert.showAndWait();
     }
 
     /**

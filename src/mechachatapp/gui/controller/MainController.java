@@ -7,7 +7,11 @@ package mechachatapp.gui.controller;
 
 import java.net.URL;
 import java.util.ResourceBundle;
+import javafx.event.Event;
+import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
+import javafx.scene.layout.BorderPane;
+import javafx.stage.Stage;
 import mechachatapp.gui.model.UserModel;
 
 /**
@@ -17,7 +21,10 @@ import mechachatapp.gui.model.UserModel;
  */
 public class MainController implements Initializable
 {
-
+    
+    @FXML
+    private BorderPane rootBorderPane;
+    
     private UserModel userModel;
 
     /**
@@ -26,12 +33,17 @@ public class MainController implements Initializable
     @Override
     public void initialize(URL url, ResourceBundle rb)
     {
-
+        //((Stage) rootBorderPane.getScene().getWindow()).setFullScreen(true);
     }
-
+    
+    @FXML
+    private void handleTabSelection(Event event)
+    {
+    }
+    
     void setUserModel(UserModel userModel)
     {
         this.userModel = userModel;
     }
-
+    
 }
