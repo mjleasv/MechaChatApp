@@ -1,8 +1,10 @@
 package mechachatapp.gui.model;
 
+import java.util.Iterator;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import mechachatapp.be.Message;
+import mechachatapp.be.MessageTypes;
 import mechachatapp.be.User;
 import mechachatapp.bll.IMechaChatLogicFacade;
 import mechachatapp.bll.MechaChatLogicFacade;
@@ -18,9 +20,19 @@ public class MechaChatLogModel
     private final IMechaChatLogicFacade facade;
 
     private ObservableList<Message> messages;
+    
+    private ObservableList<Message> textFilter;
+    private ObservableList<Message> imageFilter;
+    private ObservableList<Message> tweetFilter;
+    private ObservableList<Message> linkFilter;
 
     public MechaChatLogModel()
     {
+        this.linkFilter = FXCollections.observableArrayList();
+        this.tweetFilter = FXCollections.observableArrayList();
+        this.imageFilter = FXCollections.observableArrayList();
+        this.textFilter = FXCollections.observableArrayList();
+        
         currentUser = new User(0, "test", "test@test.dk");
         
         messages = FXCollections.observableArrayList();
@@ -29,18 +41,24 @@ public class MechaChatLogModel
         
         //messages.addAll(facade.getMessages());
         messages.addAll(facade.getMessages(currentUser.getId()));
+        
+        filterMessagesByType();
+        
+        
     }
 
     public void gotoSoloMessages()
     {
         messages.clear();
         messages.addAll(facade.getMessages(currentUser.getId()));
+        filterMessagesByType();
     }
     
     public void gotoAllMessages()
     {
         messages.clear();
         messages.addAll(facade.getMessages());
+        filterMessagesByType();
     }
     
     public User getCurrentUser() {
@@ -71,6 +89,8 @@ public class MechaChatLogModel
         Message msg = facade.logMessage(text, currentUser.getId());
         messages.add(msg);
         
+        filterMessagesByType();
+        
         return msg;
     }
     
@@ -85,6 +105,19 @@ public class MechaChatLogModel
         {
             //Report something went wrong...
             return false;
+        }
+    }
+
+    private void filterMessagesByType() {
+        Iterator iter = new MessageTypes();
+        
+        while(iter.hasNext())
+        {
+            MessageTypes.MessageType currentType = (MessageTypes.MessageType)iter.next();
+            for (Message message : messages) {
+                //filter based on type into the lists.
+               
+            }
         }
     }
 

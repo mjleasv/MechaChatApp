@@ -19,7 +19,7 @@ public class EmailValidation implements InputValidation {
         //an email is split by an "@" sign, but only 1
         if(parts.length != 2) throw new ValidationException("Email must contain an @");
         
-        String[] domainParts = parts[1].split(".");
+        String[] domainParts = parts[1].split("\\.");
         
         //the domain has to have a "." and at least 2 parts, eg. "mail.co.uk" is okay
         if(domainParts.length < 2) throw new ValidationException("Email demain must contain a .");

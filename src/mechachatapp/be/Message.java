@@ -19,6 +19,7 @@ public class Message
     private final IntegerProperty id = new SimpleIntegerProperty();
     private final StringProperty text = new SimpleStringProperty();
     private final IntegerProperty userId = new SimpleIntegerProperty();
+    private MessageTypes.MessageType type;
     
     public Message(int id, String text, int userId)
     {
