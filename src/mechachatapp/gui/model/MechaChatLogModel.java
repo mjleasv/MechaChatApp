@@ -1,124 +1,64 @@
+/*
+ * To change this license header, choose License Headers in Project Properties.
+ * To change this template file, choose Tools | Templates
+ * and open the template in the editor.
+ */
 package mechachatapp.gui.model;
 
-import java.util.Iterator;
+import java.util.List;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import mechachatapp.be.Message;
-import mechachatapp.be.MessageTypes;
-import mechachatapp.be.User;
-import mechachatapp.bll.IMechaChatLogicFacade;
-import mechachatapp.bll.MechaChatLogicFacade;
+import mechachatapp.bll.exceptions.BllException;
+import mechachatapp.bll.facade.IMechaChatLogicFacade;
+import mechachatapp.bll.facade.MCLogicFacade;
 
 /**
  *
- * @author pgn & mjlª
+ * @author pgn
  */
 public class MechaChatLogModel
 {
-    private User currentUser;
 
-    private final IMechaChatLogicFacade facade;
+    private IMechaChatLogicFacade facade;
 
     private ObservableList<Message> messages;
-    
-    private ObservableList<Message> textFilter;
-    private ObservableList<Message> imageFilter;
-    private ObservableList<Message> tweetFilter;
-    private ObservableList<Message> linkFilter;
 
-    public MechaChatLogModel()
+    public MechaChatLogModel() throws BllException
     {
-        this.linkFilter = FXCollections.observableArrayList();
-        this.tweetFilter = FXCollections.observableArrayList();
-        this.imageFilter = FXCollections.observableArrayList();
-        this.textFilter = FXCollections.observableArrayList();
-        
-        currentUser = new User(0, "test", "test@test.dk");
-        
         messages = FXCollections.observableArrayList();
-
-        facade = MechaChatLogicFacade.getInstance();
-        
-        //messages.addAll(facade.getMessages());
-        messages.addAll(facade.getMessages(currentUser.getId()));
-        
-        filterMessagesByType();
-        
-        
+        facade = MCLogicFacade.getInstance();
+        messages.addAll(facade.getAllMessages());
     }
 
-    public void gotoSoloMessages()
+    public void deleteMessage(Message message) throws BllException
     {
-        messages.clear();
-        messages.addAll(facade.getMessages(currentUser.getId()));
-        filterMessagesByType();
-    }
-    
-    public void gotoAllMessages()
-    {
-        messages.clear();
-        messages.addAll(facade.getMessages());
-        filterMessagesByType();
-    }
-    
-    public User getCurrentUser() {
-        return currentUser;
+        facade.deleteMessage(message);
+        messages.remove(message);
     }
 
-    public void setCurrentUser(User currentUser) {
-        this.currentUser = currentUser;
-    }
-    
+    /**
+     * Get a list of all the messages in the log.
+     *
+     * @return
+     */
     public ObservableList<Message> getMessages()
     {
         return messages;
     }
-    
-    public User createUser(String username, String email, String password)
-    {
-        return facade.createUser(username, email, password);
-    }
-    
-    public User loginUser(String username, String password)
-    {
-        return facade.login(username, password);
-    }
-   
-    public Message logMessage(String text)
-    {
-        Message msg = facade.logMessage(text, currentUser.getId());
-        messages.add(msg);
-        
-        filterMessagesByType();
-        
-        return msg;
-    }
-    
-    public boolean removeMessage(Message msg)
-    {
-        if(facade.removeMessage(msg))
-        {
-            messages.remove(msg);
-            return true;
-        } 
-        else
-        {
-            //Report something went wrong...
-            return false;
-        }
-    }
 
-    private void filterMessagesByType() {
-        Iterator iter = new MessageTypes();
-        
-        while(iter.hasNext())
-        {
-            MessageTypes.MessageType currentType = (MessageTypes.MessageType)iter.next();
-            for (Message message : messages) {
-                //filter based on type into the lists.
-               
-            }
-        }
+    /**
+     * Adds a new message to the log.
+     *
+     * @param text The text of the message.
+     * @return
+     * @throws BllException
+     */
+    public Message logMessage(String text) throws BllException
+    {
+        Message msg = facade.logMessage(text);
+        messages.add(msg);
+        return msg;
     }
 
 }

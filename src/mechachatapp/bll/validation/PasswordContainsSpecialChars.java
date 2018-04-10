@@ -12,21 +12,21 @@ import java.util.regex.Pattern;
  *
  * @author pgn
  */
-public class EmailValidation extends AbstractValidation
+public class PasswordContainsSpecialChars extends AbstractValidation
 {
 
     @Override
     public boolean validateInput(String input)
     {
-        Pattern pattern = Pattern.compile("^[A-Z0-9._%+-]+@[A-Z0-9.-]+\\.[A-Z]{2,6}$", Pattern.CASE_INSENSITIVE);
-        Matcher matcher = pattern.matcher(input);
-        if (matcher.find())
+        Pattern p = Pattern.compile("[^A-Za-z0-9]");
+        Matcher m = p.matcher(input);
+        if (m.find())
         {
             validationMessage = "";
             return true;
         } else
         {
-            validationMessage = "Email is invalid";
+            validationMessage = "Password must contain special characters";
             return false;
         }
     }

@@ -6,36 +6,24 @@
 package mechachatapp;
 
 import javafx.application.Application;
-import javafx.application.Platform;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
-import javafx.stage.StageStyle;
-import mechachatapp.gui.controller.LoginViewController;
 
 /**
  *
  * @author pgn
  */
-public class MechaChatApp extends Application
+public final class MechaChatApp extends Application
 {
 
     @Override
     public void start(Stage stage) throws Exception
     {
-        FXMLLoader loginLoader = new FXMLLoader(getClass().getResource("/mechachatapp/gui/view/LoginView.fxml"));
-        Parent loginRoot = loginLoader.load();
-        LoginViewController controller = loginLoader.getController();
-        controller.setStage(stage);
-        
-        Scene loginScene = new Scene(loginRoot);
-        
-        stage.setScene(loginScene);
-        
-        //stage.initStyle(StageStyle.UNDECORATED); //Removing borders means the window cannot be moved, unless dragging is implemented.
-        //stage.setOnCloseRequest(e -> Platform.exit());
-        
+        Parent root = FXMLLoader.load(getClass().getResource("/mechachatapp/gui/view/LoginView.fxml"));
+        Scene scene = new Scene(root);
+        stage.setScene(scene);
         stage.show();
     }
 

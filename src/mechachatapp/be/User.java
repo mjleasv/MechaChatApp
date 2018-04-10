@@ -5,55 +5,65 @@
  */
 package mechachatapp.be;
 
-import javafx.beans.property.IntegerProperty;
-import javafx.beans.property.SimpleIntegerProperty;
+import javafx.beans.property.ReadOnlyIntegerProperty;
+import javafx.beans.property.ReadOnlyIntegerWrapper;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.beans.property.StringProperty;
 
 /**
  *
- * @author mjl
+ * @author pgn
  */
-public class User {
-    private final IntegerProperty id = new SimpleIntegerProperty();
-    private final StringProperty username = new SimpleStringProperty();
+public class User
+{
+
+    private final ReadOnlyIntegerWrapper id;
     private final StringProperty email = new SimpleStringProperty();
+    private final StringProperty name = new SimpleStringProperty();
 
-    public User(int id, String username, String email) {
-        this.id.setValue(id);
-        this.username.setValue(username);
-        this.email.setValue(email);
-    }
-    
-    public IntegerProperty getIdProperty() {
-        return id;
+    public User(int id, String userName, String email)
+    {
+        this.id = new ReadOnlyIntegerWrapper(id);
     }
 
-    public StringProperty getUsernameProperty() {
-        return username;
-    }
-
-    public StringProperty getEmailProperty() {
-        return email;
-    }
-    
-    public int getId() {
+    public int getId()
+    {
         return id.get();
     }
 
-    public String getUsername() {
-        return username.get();
+    public ReadOnlyIntegerProperty idProperty()
+    {
+        return id;
     }
 
-    public String getEmail() {
+    public String getName()
+    {
+        return name.get();
+    }
+
+    public void setName(String value)
+    {
+        name.set(value);
+    }
+
+    public StringProperty nameProperty()
+    {
+        return name;
+    }
+
+    public String getEmail()
+    {
         return email.get();
     }
 
-    public void setUsername(String value) {
-        username.setValue(value);
+    public void setEmail(String value)
+    {
+        email.set(value);
     }
 
-    public void getEmail(String value) {
-        email.setValue(value);
+    public StringProperty emailProperty()
+    {
+        return email;
     }
+
 }

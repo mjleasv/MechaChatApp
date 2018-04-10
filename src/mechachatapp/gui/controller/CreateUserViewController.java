@@ -5,73 +5,122 @@
  */
 package mechachatapp.gui.controller;
 
-import com.jfoenix.controls.JFXTextField;
 import java.net.URL;
 import java.util.ResourceBundle;
+import javafx.beans.value.ObservableValue;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
-import javafx.scene.Node;
 import javafx.scene.control.Label;
+import javafx.scene.control.TextField;
 import javafx.stage.Stage;
-import mechachatapp.gui.model.MechaChatLogModel;
+import mechachatapp.bll.exceptions.BllException;
+import mechachatapp.bll.validation.AbstractValidation;
+import mechachatapp.bll.validation.IValidation;
+import mechachatapp.bll.validation.ValidationFactory;
+import mechachatapp.gui.model.UserModel;
 
 /**
  * FXML Controller class
  *
- * @author mjl
+ * @author pgn
  */
-public class CreateUserViewController implements Initializable {
+public class CreateUserViewController extends CommandableController implements Initializable
+{
 
     @FXML
-    private JFXTextField username;
+    private TextField txtEmail;
     @FXML
-    private JFXTextField password;
+    private Label txtEmailError;
     @FXML
-    private Label errorLabel;
-    
-    private MechaChatLogModel model;
-    
-    private Stage stage;
-    
-    private boolean cancelled;
+    private TextField txtPassword;
     @FXML
-    private JFXTextField email;
+    private TextField txtPasswordAgain;
     @FXML
-    private JFXTextField passwordAgain;
+    private Label txtPasswordAgainError;
+    @FXML
+    private Label txtPasswordError;
+    @FXML
+    private TextField txtUserName;
+    @FXML
+    private Label txtUserNameError;
 
-    public boolean isCancelled() {
-        return cancelled;
-    }
+    private UserModel userModel;
 
-    public void setModel(MechaChatLogModel model) {
-        this.model = model;
-        cancelled = false;
-    }
-    
-    public void setStage(Stage stage)
-    {
-        this.stage = stage;
-    }
+    private IValidation userNameValidation;
+    private IValidation emailValidation;
+    private IValidation passwordValidation;
 
     /**
      * Initializes the controller class.
      */
     @Override
-    public void initialize(URL url, ResourceBundle rb) {
-        
-    }    
+    public void initialize(URL url, ResourceBundle rb)
+    {
+        try
+        {
+            userNameValidation = ValidationFactory.CreateInputValidation(ValidationFactory.ValidationTypes.USER_NAME);
+            bindValidation(txtUserName, txtUserNameError, userNameValidation);
+            emailValidation = ValidationFactory.CreateInputValidation(ValidationFactory.ValidationTypes.EMAIL);
+            bindValidation(txtEmail, txtEmailError, emailValidation);
+            passwordValidation = ValidationFactory.CreateInputValidation(ValidationFactory.ValidationTypes.PASSWORD);
+            bindValidation(txtPassword, txtPasswordError, passwordValidation);
+            IValidation passwordAgainValidation = new AbstractValidation()
+            {
+                @Override
+                public boolean validateInput(String input)
+                {
+                    String passwrd = txtPassword.getText().trim();
+                    String passwrd2 = txtPasswordAgain.getText().trim();
+                    if (passwrd.equalsIgnoreCase(passwrd2))
+                    {
+                        validationMessage = "Passwords are identical";
+                        return true;
+                    } else
+                    {
+                        validationMessage = "The passwords are not identical";
+                        return false;
+                    }
+                }
 
-    @FXML
-    private void handleCancel(ActionEvent event) {
-        cancelled = true;
-        stage.close();
+            };
+            bindValidation(txtPasswordAgain, txtPasswordAgainError, passwordAgainValidation);
+            bindValidation(txtPassword, txtPasswordAgainError, passwordAgainValidation);
+        } catch (BllException ex)
+        {
+            displayException(ex);
+        }
+    }
+
+    private void bindValidation(TextField txtField, Label errorMsg, IValidation validation)
+    {
+        txtField.textProperty().addListener((ObservableValue<? extends String> observable, String oldValue, String newValue)
+                -> 
+                {
+                    if (!validation.validateInput(newValue))
+                    {
+                        errorMsg.textProperty().setValue(validation.getValidationMessage());
+                    } else
+                    {
+                        errorMsg.textProperty().setValue("");
+                    }
+        });
     }
 
     @FXML
-    private void handleCreate(ActionEvent event) {
-        model.createUser(username.getText(), email.getText(), password.getText());
-        stage.close();
+    private void handleCreateUser(ActionEvent event) throws BllException
+    {
+        String userName = txtUserName.getText().trim();
+        String email = txtEmail.getText().trim();
+        String password = txtPassword.getText().trim();
+        userModel.createNewUser(userName, email, password);
+        userModel.logInUser(userName, password);
+        ((Stage) txtEmail.getScene().getWindow()).close();
     }
-    
+
+    void setUserModel(UserModel userModel)
+    {
+        this.userModel = userModel;
+    }
+
 }
